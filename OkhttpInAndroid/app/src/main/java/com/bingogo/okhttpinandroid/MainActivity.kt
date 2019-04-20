@@ -3,6 +3,7 @@ package com.bingogo.okhttpinandroid
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import com.bingogo.okhttpinandroid.cache.CacheActivity
+import com.bingogo.okhttpinandroid.proxy.ProxyActivity
 import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {
@@ -20,7 +21,7 @@ class MainActivity : AppCompatActivity() {
         }
 
         btn_test_proxy.setOnClickListener {
-
+            ProxyActivity.launch(this)
         }
     }
 }

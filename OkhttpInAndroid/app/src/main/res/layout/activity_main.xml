@@ -21,7 +21,7 @@
 
     <Button
         android:id="@+id/btn_test_proxy"
-        android:text="btn_test_proxy"
+        android:text="Test_Proxy"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
 

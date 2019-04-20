@@ -25,6 +25,10 @@
         <activity android:name=".cache.CacheActivity"
             android:label="Cache"
             />
+
+        <activity android:name=".proxy.ProxyActivity"
+            android:label="ProxyUsage"
+            />
     </application>
 
 </manifest>
