@@ -29,6 +29,10 @@
         <activity android:name=".proxy.ProxyActivity"
             android:label="ProxyUsage"
             />
+
+        <activity android:name=".interceptor.InterceptorTestActivity"
+            android:label="InterceptorUsage"
+            />
     </application>
 
 </manifest>
