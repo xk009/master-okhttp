@@ -80,7 +80,9 @@ public final class Http1Codec implements HttpCodec {
   /** The stream allocation that owns this stream. May be null for HTTPS proxy tunnels. */
   final StreamAllocation streamAllocation;
 
+  // Source ：相当于 Java IO 中的输入流，用来从网络、内存或者磁盘读取数据
   final BufferedSource source;
+  // Sink：相当于 Java IO 中的输出流，用于写数据到网络、磁盘或者内存
   final BufferedSink sink;
   int state = STATE_IDLE;
 

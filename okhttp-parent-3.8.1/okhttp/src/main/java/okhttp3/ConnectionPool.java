@@ -52,8 +52,10 @@ public final class ConnectionPool {
       new SynchronousQueue<Runnable>(), Util.threadFactory("OkHttp ConnectionPool", true));
 
   /** The maximum number of idle connections for each address. */
-  private final int maxIdleConnections;
-  private final long keepAliveDurationNs;
+  private final int maxIdleConnections; //每个地址最大空闲连接数
+  private final long keepAliveDurationNs;  //空闲连接存活时间
+
+  //负责清理的任务
   private final Runnable cleanupRunnable = new Runnable() {
     @Override public void run() {
       while (true) {

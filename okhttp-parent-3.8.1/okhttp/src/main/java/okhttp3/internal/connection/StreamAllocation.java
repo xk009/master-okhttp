@@ -158,6 +158,7 @@ public final class StreamAllocation {
       }
 
       // Attempt to get a connection from the pool.
+      //从连接池找一下
       Internal.instance.get(connectionPool, address, this, null);
       if (connection != null) {
         return connection;
@@ -167,6 +168,7 @@ public final class StreamAllocation {
     }
 
     // If we need a route, make one. This is a blocking operation.
+    //如果没找到，就拿一个路由再去找一下
     if (selectedRoute == null) {
       selectedRoute = routeSelector.next();
     }
@@ -183,6 +185,8 @@ public final class StreamAllocation {
         return connection;
       }
 
+      // 如果上面从连接池中没找到的话，就新建一个
+
       // Create a connection and assign it to this allocation immediately. This makes it possible
       // for an asynchronous cancel() to interrupt the handshake we're about to do.
       route = selectedRoute;
@@ -198,6 +202,7 @@ public final class StreamAllocation {
     Socket socket = null;
     synchronized (connectionPool) {
       // Pool the connection.
+      //将新建的连接保存到池中
       Internal.instance.put(connectionPool, result);
 
       // If another multiplexed connection to the same address was created concurrently, then
@@ -345,7 +350,7 @@ public final class StreamAllocation {
    * Use this allocation to hold {@code connection}. Each call to this must be paired with a call to
    * {@link #release} on the same connection.
    */
-  public void acquire(RealConnection connection) {
+  public void acquire(RealConnection connection) { // 增加这个 connection 的流数目
     assert (Thread.holdsLock(connectionPool));
     if (this.connection != null) throw new IllegalStateException();
 
@@ -354,11 +359,11 @@ public final class StreamAllocation {
   }
 
   /** Remove this allocation from the connection's list of allocations. */
-  private void release(RealConnection connection) {
+  private void release(RealConnection connection) { // 减少这个 connection 上的流数目
     for (int i = 0, size = connection.allocations.size(); i < size; i++) {
       Reference<StreamAllocation> reference = connection.allocations.get(i);
       if (reference.get() == this) {
-        connection.allocations.remove(i);
+        connection.allocations.remove(i); // 实际是改变这个 allocations 的大小
         return;
       }
     }

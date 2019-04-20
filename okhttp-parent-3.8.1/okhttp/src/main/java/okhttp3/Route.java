@@ -34,6 +34,7 @@ import javax.annotation.Nullable;
  *
  * <p>Each route is a specific selection of these options.
  */
+// 表示连接到达服务器需要路由信息，包括代理服务器信息和具体的 IP 信息
 public final class Route {
   final Address address;
   final Proxy proxy;

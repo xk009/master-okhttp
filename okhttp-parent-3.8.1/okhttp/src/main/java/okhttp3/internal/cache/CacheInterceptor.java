@@ -53,6 +53,7 @@ public final class CacheInterceptor implements Interceptor {
     Response cacheCandidate = cache != null
         ? cache.get(chain.request())
         : null;
+    //先去拿缓存候选者，拿到了用不用得看情况
 
     long now = System.currentTimeMillis();
 
@@ -159,6 +160,7 @@ public final class CacheInterceptor implements Interceptor {
       throws IOException {
     // Some apps return a null body; for compatibility we treat that like a null cache request.
     if (cacheRequest == null) return response;
+    // 写入到缓存的输出流Sink
     Sink cacheBodyUnbuffered = cacheRequest.body();
     if (cacheBodyUnbuffered == null) return response;
 
@@ -171,6 +173,7 @@ public final class CacheInterceptor implements Interceptor {
       @Override public long read(Buffer sink, long byteCount) throws IOException {
         long bytesRead;
         try {
+          // 当前的source来自网络请求的响应response的body。
           bytesRead = source.read(sink, byteCount);
         } catch (IOException e) {
           if (!cacheRequestClosed) {
@@ -188,6 +191,7 @@ public final class CacheInterceptor implements Interceptor {
           return -1;
         }
 
+        // 当它读取的时候，会顺带着 copy 到缓存的cacheBody中
         sink.copyTo(cacheBody.buffer(), sink.size() - bytesRead, bytesRead);
         cacheBody.emitCompleteSegments();
         return bytesRead;
@@ -207,6 +211,7 @@ public final class CacheInterceptor implements Interceptor {
       }
     };
 
+    // 当用户读取这个的 response 的body,实际是从 cacheWritingSource 的read()方法中读取。
     return response.newBuilder()
         .body(new RealResponseBody(response.headers(), Okio.buffer(cacheWritingSource)))
         .build();

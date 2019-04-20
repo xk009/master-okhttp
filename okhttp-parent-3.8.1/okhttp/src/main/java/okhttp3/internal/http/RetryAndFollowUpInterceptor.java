@@ -134,6 +134,7 @@ public final class RetryAndFollowUpInterceptor implements Interceptor {
         continue;
       } finally {
         // We're throwing an unchecked exception. Release any resources.
+        //请求过程中，只要发生未处理的异常，releaseConnection 就会为true，一旦变为true，就会将StreamAllocation释放掉
         if (releaseConnection) {
           streamAllocation.streamFailed(null);
           streamAllocation.release();
@@ -149,6 +150,7 @@ public final class RetryAndFollowUpInterceptor implements Interceptor {
             .build();
       }
 
+      //根据 code 和 method 判断是否需要重定向请求
       Request followUp = followUpRequest(response);
 
       if (followUp == null) {

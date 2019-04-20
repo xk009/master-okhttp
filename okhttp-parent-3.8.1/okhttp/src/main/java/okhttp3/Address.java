@@ -35,6 +35,7 @@ import static okhttp3.internal.Util.equal;
  *
  * <p>HTTP requests that share the same {@code Address} may also share the same {@link Connection}.
  */
+// 表示连接访问服务器的相关配置
 public final class Address {
   final HttpUrl url;
   final Dns dns;

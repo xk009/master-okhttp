@@ -76,13 +76,13 @@ public final class RealConnection extends Http2Connection.Listener implements Co
   // The fields below are initialized by connect() and never reassigned.
 
   /** The low-level TCP socket. */
-  private Socket rawSocket;
+  private Socket rawSocket;  //底层的 TCP socket
 
   /**
    * The application layer socket. Either an {@link SSLSocket} layered over {@link #rawSocket}, or
    * {@link #rawSocket} itself if this connection does not use SSL.
    */
-  private Socket socket;
+  private Socket socket; //应用层的 socket，使用 SSL 时就是 SSLSocket,否则就是 rawSocket
   private Handshake handshake;
   private Protocol protocol;
   private Http2Connection http2Connection;
@@ -92,7 +92,7 @@ public final class RealConnection extends Http2Connection.Listener implements Co
   // The fields below track connection state and are guarded by connectionPool.
 
   /** If true, no new streams can be created on this connection. Once true this is always true. */
-  public boolean noNewStreams;
+  public boolean noNewStreams;  //标识当前的连接是否可用
 
   public int successCount;
 
@@ -100,10 +100,10 @@ public final class RealConnection extends Http2Connection.Listener implements Co
    * The maximum number of concurrent streams that can be carried by this connection. If {@code
    * allocations.size() < allocationLimit} then new streams can be created on this connection.
    */
-  public int allocationLimit = 1;
+  public int allocationLimit = 1; // 一个连接最多能并发有几个请求流, http/2.0可以有多个
 
   /** Current streams carried by this connection. */
-  public final List<Reference<StreamAllocation>> allocations = new ArrayList<>();
+  public final List<Reference<StreamAllocation>> allocations = new ArrayList<>();  //当前连接上的流引用列表
 
   /** Nanotime timestamp when {@code allocations.size()} reached zero. */
   public long idleAtNanos = Long.MAX_VALUE;

@@ -491,6 +491,7 @@ public final class DiskLruCache implements Closeable, Flushable {
     }
 
     if (entry == null) {
+      // 创建当前key相关的缓存文件，
       entry = new Entry(key);
       lruEntries.put(key, entry);
     }

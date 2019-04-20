@@ -43,9 +43,11 @@ public final class CallServerInterceptor implements Interceptor {
     Request request = realChain.request();
 
     long sentRequestMillis = System.currentTimeMillis();
+    //将请求中的 header 写给服务器
     httpCodec.writeRequestHeaders(request);
 
     Response.Builder responseBuilder = null;
+    //有请求体的话，将 body 发送给服务器
     if (HttpMethod.permitsRequestBody(request.method()) && request.body() != null) {
       // If there's a "Expect: 100-continue" header on the request, wait for a "HTTP/1.1 100
       // Continue" response before transmitting the request body. If we don't get that, return what
@@ -57,6 +59,7 @@ public final class CallServerInterceptor implements Interceptor {
 
       if (responseBuilder == null) {
         // Write the request body if the "Expect: 100-continue" expectation was met.
+
         Sink requestBodyOut = httpCodec.createRequestBody(request, request.body().contentLength());
         BufferedSink bufferedRequestBody = Okio.buffer(requestBodyOut);
         request.body().writeTo(bufferedRequestBody);
@@ -69,9 +72,11 @@ public final class CallServerInterceptor implements Interceptor {
       }
     }
 
+    //结束请求的发送
     httpCodec.finishRequest();
 
     if (responseBuilder == null) {
+      // 读取响应头
       responseBuilder = httpCodec.readResponseHeaders(false);
     }
 

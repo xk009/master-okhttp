@@ -86,10 +86,11 @@ public final class RealInterceptorChain implements Interceptor.Chain {
     }
 
     // Call the next interceptor in the chain.
+    // 先创建一个新的链，索引是当前加一
     RealInterceptorChain next = new RealInterceptorChain(
         interceptors, streamAllocation, httpCodec, connection, index + 1, request);
-    Interceptor interceptor = interceptors.get(index);
-    Response response = interceptor.intercept(next);
+    Interceptor interceptor = interceptors.get(index); // 然后获取当前的拦截器
+    Response response = interceptor.intercept(next);  //它执行的参数是持有下一个引用的链
 
     // Confirm that the next interceptor made its required call to chain.proceed().
     if (httpCodec != null && index + 1 < interceptors.size() && next.calls != 1) {

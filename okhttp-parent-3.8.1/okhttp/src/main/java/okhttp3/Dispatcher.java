@@ -37,8 +37,8 @@ import okhttp3.internal.Util;
  * of calls concurrently.
  */
 public final class Dispatcher {
-  private int maxRequests = 64;
-  private int maxRequestsPerHost = 5;
+  private int maxRequests = 64; //同时最多发起 64 个请求
+  private int maxRequestsPerHost = 5; //同一 host 最多发起 5 个请求
   private @Nullable Runnable idleCallback;
 
   /** Executes calls. Created lazily. */

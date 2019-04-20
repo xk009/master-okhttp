@@ -435,6 +435,7 @@ public final class Cache implements Closeable, Flushable {
 
     CacheRequestImpl(final DiskLruCache.Editor editor) {
       this.editor = editor;
+      // 缓存body的输出流，cacheWritingResponse 方法中有读取network Response的内容时，会触发往这个缓存的输出流写内容的操作。
       this.cacheOut = editor.newSink(ENTRY_BODY);
       this.body = new ForwardingSink(cacheOut) {
         @Override public void close() throws IOException {

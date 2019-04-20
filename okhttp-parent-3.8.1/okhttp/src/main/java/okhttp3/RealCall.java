@@ -171,6 +171,7 @@ final class RealCall implements Call {
     // Build a full stack of interceptors.
     List<Interceptor> interceptors = new ArrayList<>();
     interceptors.addAll(client.interceptors());
+    //内置的 5 个拦截器
     interceptors.add(retryAndFollowUpInterceptor);
     interceptors.add(new BridgeInterceptor(client.cookieJar()));
     interceptors.add(new CacheInterceptor(client.internalCache()));
@@ -180,6 +181,7 @@ final class RealCall implements Call {
     }
     interceptors.add(new CallServerInterceptor(forWebSocket));
 
+    //创建一个 RealInterceptorChain ，传入刚才的拦截器列表
     Interceptor.Chain chain = new RealInterceptorChain(
         interceptors, null, null, null, 0, originalRequest);
     return chain.proceed(originalRequest);
