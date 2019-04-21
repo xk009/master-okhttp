@@ -38,21 +38,12 @@ class InterceptorTestActivity : AppCompatActivity() {
     private fun initListener() {
         btn_application_interceptor.setOnClickListener {
             performRequestWithSpecialInterceptor {
-//                - 不用担心请求过程中调用了几次
-//                - 重定向，重试，从缓存中取数据都也只会调用一次
-//                - 不关心Okhttp注入的请求头，如If-None-Match
-//                - 允许请求短路，也就是说可以不调用Chain.proceed()来终止调用
-//                - 允许重试也就是调用多次Chain.proceed()方法
                 addInterceptor(LoggingInterceptor())
             }
         }
 
         btn_network_interceptor.setOnClickListener {
             performRequestWithSpecialInterceptor {
-//                - 能够操作请求过程，比如：重定向，重试
-//                - 当返回缓存数据时不调用
-//                - 用来只观察网络上传输的数据
-//                - 同时看到请求的链接，包括重定向的链接
                 addNetworkInterceptor(LoggingInterceptor())
             }
         }
