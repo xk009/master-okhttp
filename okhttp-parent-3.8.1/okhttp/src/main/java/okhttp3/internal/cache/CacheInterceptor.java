@@ -87,6 +87,7 @@ public final class CacheInterceptor implements Interceptor {
     // If we don't need the network, we're done.
       // 如果配置不需要网络请求，直接返回缓存的response
     if (networkRequest == null) {
+      System.out.println("不需要发起网络请求，使用了缓存");
       return cacheResponse.newBuilder()
           .cacheResponse(stripBody(cacheResponse))
           .build();
@@ -121,17 +122,20 @@ public final class CacheInterceptor implements Interceptor {
         // Content-Encoding header (as performed by initContentStream()).
         cache.trackConditionalCacheHit();
         cache.update(cacheResponse, response);
+        System.out.println("去服务端验证了缓存是否新鲜之后，使用了缓存");
         return response;
       } else {
         closeQuietly(cacheResponse.body());
       }
     }
 
+    // 下面是使用了 networkResponse，有需要的话，写入缓存。
     Response response = networkResponse.newBuilder()
         .cacheResponse(stripBody(cacheResponse))
         .networkResponse(stripBody(networkResponse))
         .build();
 
+    System.out.println("使用了网络Response");
     if (cache != null) {
       // 如果当前这个http有返回的body，并且可以缓存，那就缓存他
       if (HttpHeaders.hasBody(response) && CacheStrategy.isCacheable(response, networkRequest)) {
