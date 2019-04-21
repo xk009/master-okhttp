@@ -18,7 +18,7 @@ public class BInterceptor implements Interceptor {
 
         Response proceed = chain.proceed(request);
 
-        System.out.println("BInterceptor process, before request...");
+        System.out.println("BInterceptor process, after request...");
 
         return proceed;
     }

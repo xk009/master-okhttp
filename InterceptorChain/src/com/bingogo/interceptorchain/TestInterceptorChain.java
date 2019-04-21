@@ -1,7 +1,6 @@
 package com.bingogo.interceptorchain;
 
-import com.bingogo.interceptorchain.interceptor.AInterceptor;
-import com.bingogo.interceptorchain.interceptor.BInterceptor;
+import com.bingogo.interceptorchain.interceptor.*;
 import org.junit.Test;
 
 import java.io.IOException;
@@ -27,8 +26,12 @@ public class TestInterceptorChain {
 
         // Build a full stack of interceptors.
         List<Interceptor> interceptors = new ArrayList<>();
-        interceptors.add(new AInterceptor());
-        interceptors.add(new BInterceptor());
+//        interceptors.add(new AInterceptor());
+//        interceptors.add(new BInterceptor());
+        interceptors.add(new RetryAndFollowUpInterceptor());
+        interceptors.add(new BridgeInterceptor());
+        interceptors.add(new CacheInterceptor());
+        interceptors.add(new ConnectInterceptor());
         interceptors.add(new CallServerInterceptor());
 
         Interceptor.Chain chain = new RealInterceptorChain(

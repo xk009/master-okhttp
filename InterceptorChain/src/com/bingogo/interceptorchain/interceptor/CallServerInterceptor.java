@@ -1,5 +1,9 @@
-package com.bingogo.interceptorchain;
+package com.bingogo.interceptorchain.interceptor;
 
+
+import com.bingogo.interceptorchain.Interceptor;
+import com.bingogo.interceptorchain.Request;
+import com.bingogo.interceptorchain.Response;
 
 import java.io.IOException;
 
@@ -19,6 +23,7 @@ public class CallServerInterceptor implements Interceptor {
         //创建结果，在真实的okhttp源码中这个拦截器会从网络请求数据
         //我们这里只是模拟这个过程
         Response response = new Response(request.getUrl());
+        System.out.println("基于网络IO创建Response");
 
         System.out.println("CallServerInterceptor process, after request...");
 
